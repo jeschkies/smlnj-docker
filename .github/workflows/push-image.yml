@@ -1,9 +1,9 @@
 name: CI to Docker hub 
 
 on:
-
   push:
-    branches: [ master ]
+    branches: [ main ]
+
 jobs:
 
   push:
@@ -11,13 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
         - name: Login to DockerHub
           uses: docker/login-action@v1 
           with:
             username: ${{ secrets.DOCKER_HUB_USERNAME }}
             password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
         - name: Build and push
           id: docker_build
           uses: docker/build-push-action@v2
@@ -26,6 +24,5 @@ jobs:
             file: ./Dockerfile
             push: true
             tags: jeschkies/smlnj:latest
-
         - name: Image digest
           run: echo ${{ steps.docker_build.outputs.digest }}
